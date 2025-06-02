@@ -44,6 +44,18 @@ api:
 	       --openapi_out=fq_schema_naming=true,default_response=false:. \
 	       $(API_PROTO_FILES)
 
+.PHONY: validate
+# generate validate proto
+validate:
+	@echo "Cleaning old generated files..."
+	if exist api\operation\v1\operation.pb.go del /f api\operation\v1\operation.pb.go
+	@echo "Generating validate proto files..."
+	protoc --proto_path=./api \
+	       --proto_path=./third_party \
+	       --go_out=paths=source_relative:./api \
+	       --validate_out=paths=source_relative,lang=go:./api \
+	       $(API_PROTO_FILES)
+
 .PHONY: build
 # build
 build:
